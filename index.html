@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Advanced Cricket Game</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: url('stadium.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+    }
+    h1, h2 {
+      margin: 10px;
+    }
+    .input-section, .game-area {
+      margin-top: 20px;
+    }
+    input, button {
+      padding: 10px;
+      font-size: 16px;
+    }
+    .buttons button {
+      margin: 8px;
+      background-color: #1e88e5;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .buttons button:hover {
+      background-color: #1565c0;
+    }
+    #commentary, #scoreboard {
+      margin-top: 20px;
+      font-size: 18px;
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 15px;
+      border-radius: 10px;
+    }
+    #final-result {
+      font-size: 22px;
+      margin-top: 20px;
+    }
+    .hidden {
+      display: none;
+    }
+    #sound-toggle {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🏏 Advanced Cricket Game vs Friend or Bot</h1>
+
+  <div class="input-section">
+    <input type="text" id="player1-name" placeholder="Enter Player 1 Name">
+    <input type="text" id="player2-name" placeholder="Enter Player 2 or type 'Bot'">
+    <button onclick="startGame()">Start Game</button>
+  </div>
+
+  <div id="game-area" class="hidden">
+    <h2 id="innings-heading"></h2>
+    <div id="score">Score: 0 | Wickets: 0 | Balls: 0</div>
+    <div class="buttons">
+      <button onclick="play(1)">1</button>
+      <button onclick="play(2)">2</button>
+      <button onclick="play(3)">3</button>
+      <button onclick="play(4)">4</button>
+      <button onclick="play(5)">5</button>
+      <button onclick="play(6)">6</button>
+    </div>
+    <div id="commentary"></div>
+    <div id="scoreboard"></div>
+    <div id="final-result"></div>
+    <div>
+      <label><input type="checkbox" id="sound-toggle" checked> Sound On</label>
+    </div>
+  </div>
+
+  <audio id="hit-sound" src="https://www.soundjay.com/button/sounds/button-16.mp3"></audio>
+  <audio id="out-sound" src="https://www.soundjay.com/button/sounds/button-3.mp3"></audio>
+
+  <script>
+    let player1 = "Player 1";
+    let player2 = "Bot";
+    let isBot = true;
+    let innings = 1;
+    let turn = 1;
+    let isOut = false;
+    let gameOver = false;
+
+    let score1 = 0, score2 = 0;
+    let wickets1 = 0, wickets2 = 0;
+    let balls = 0;
+    const maxBalls = 12;
+    const maxWickets = 2;
+    let scoreboard = [];
+
+    function startGame() {
+      player1 = document.getElementById("player1-name").value.trim() || "Player 1";
+      player2 = document.getElementById("player2-name").value.trim() || "Bot";
+      isBot = (player2.toLowerCase() === 'bot');
+      document.getElementById("innings-heading").innerText = `Toss Result: ${player1} won and chose to bat first.`;
+      document.getElementById("game-area").classList.remove("hidden");
+      updateScore();
+    }
